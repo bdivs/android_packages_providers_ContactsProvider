@@ -115,7 +115,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
      *   800-899 Kitkat
      * </pre>
      */
-    static final int DATABASE_VERSION = 803;
+    static final int DATABASE_VERSION = 804;
 
     private static final String DATABASE_NAME = "contacts2.db";
     private static final String DATABASE_PRESENCE = "presence_db";
@@ -1299,7 +1299,8 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
                 Voicemails.MIME_TYPE + " TEXT," +
                 Voicemails.SOURCE_DATA + " TEXT," +
                 Voicemails.SOURCE_PACKAGE + " TEXT," +
-                Voicemails.STATE + " INTEGER" +
+                Voicemails.STATE + " INTEGER," +
+                Calls.SUBSCRIPTION + " INTEGER NOT NULL DEFAULT 0" +
         ");");
 
         // Voicemail source status table.
@@ -2529,6 +2530,11 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
             // now indexed as names.
             upgradeSearchIndex = true;
             oldVersion = 803;
+        }
+
+        if (oldVersion < 804) {
+            upgradeToVersion804(db);
+            oldVersion = 804;
         }
 
         if (upgradeViewsAndTriggers) {
@@ -4032,6 +4038,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
                 ContactsContract.PinnedPositions.UNPINNED + ";");
     }
 
+<<<<<<< HEAD
     private void addIsRestrictedColumn(SQLiteDatabase db) {
         Cursor c = db.rawQuery("SELECT * FROM raw_contacts LIMIT 0", null);
 
@@ -4044,6 +4051,15 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
         Log.v(TAG, "Adding is_restricted column to database");
         db.execSQL("ALTER TABLE raw_contacts"
                 + " ADD is_restricted INTEGER;");
+=======
+    private void upgradeToVersion804(SQLiteDatabase db) {
+        try {
+            db.execSQL("ALTER TABLE " + Tables.CALLS
+                    + " ADD " + Calls.SUBSCRIPTION + " INTEGER NOT NULL DEFAULT 0;");
+        } catch (SQLException e) {
+            Log.w(TAG, "Exception upgrading contacts2.db from 803 to 804 " + e);
+        }
+>>>>>>> 506fded... Add one column for subscription in callLog database.
     }
 
     public String extractHandleFromEmailAddress(String email) {
