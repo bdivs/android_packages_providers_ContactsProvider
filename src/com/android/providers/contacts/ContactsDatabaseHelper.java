@@ -4050,7 +4050,6 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
         Log.v(TAG, "Adding is_restricted column to database");
         db.execSQL("ALTER TABLE raw_contacts"
                 + " ADD is_restricted INTEGER;");
-.
     }
 
     private void upgradeToVersion804(SQLiteDatabase db) {
