@@ -4038,6 +4038,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
                 ContactsContract.PinnedPositions.UNPINNED + ";");
     }
 
+<<<<<<< HEAD
     private void addIsRestrictedColumn(SQLiteDatabase db) {
         Cursor c = db.rawQuery("SELECT * FROM raw_contacts LIMIT 0", null);
 
@@ -4050,9 +4051,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
         Log.v(TAG, "Adding is_restricted column to database");
         db.execSQL("ALTER TABLE raw_contacts"
                 + " ADD is_restricted INTEGER;");
-.
-    }
-
+=======
     private void upgradeToVersion804(SQLiteDatabase db) {
         try {
             db.execSQL("ALTER TABLE " + Tables.CALLS
@@ -4060,7 +4059,9 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
         } catch (SQLException e) {
             Log.w(TAG, "Exception upgrading contacts2.db from 803 to 804 " + e);
         }
+>>>>>>> 506fded... Add one column for subscription in callLog database.
     }
+
     public String extractHandleFromEmailAddress(String email) {
         Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(email);
         if (tokens.length == 0) {
